@@ -9,10 +9,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
   mode: "none",
-  entry: {
-    main: ["@babel/polyfill", "./src/js/main.js"],
-    // main: ["./src/js/main.js"],
-  },
+  entry: ["./src/js/main.js"],
   output: {
     filename: "js/[name].min.js",
     path: path.resolve(__dirname, "dist"),
@@ -22,7 +19,7 @@ module.exports = {
   devServer: {
     contentBase: path.join(__dirname, "dist"),
     compress: true,
-    open: true,
+    // open: true,
     hot: true,
     liveReload: true,
     noInfo: true,
@@ -60,8 +57,15 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: [["@babel/preset-env"]],
-            plugins: [["@babel/plugin-transform-runtime"]],
+            presets: [
+              [
+                "@babel/preset-env",
+                {
+                  useBuiltIns: "usage",
+                },
+              ],
+            ],
+            plugins: ["@babel/transform-runtime"],
           },
         },
       },
@@ -148,7 +152,7 @@ module.exports = {
     minimize: true,
     minimizer: [
       new CssMinimizerPlugin(), // 压缩css
-      new TerserPlugin({}), // 压缩js
+      new TerserPlugin(), // 压缩js
     ],
   },
 };
