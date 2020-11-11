@@ -1,8 +1,8 @@
-import '../css/style.css'
+import "../css/style.css";
 
-import html from '../file.html';
+import html from "../file.html";
 
-document.getElementById("app").innerHTML = html
+$("#app").html(html);
 
 // axios
 const $axios = axios.create({
@@ -57,7 +57,7 @@ let dialog = {
 // 请求
 let axiosFun = {
   collect: async function (answerObj) {
-    var res = await $axios.post("/api/collect2/index", answerObj);
+    var res = await $axios.post("/collect2/index", answerObj);
     if (res.code == 0) {
       dialog.show("dialog-finish");
     } else if (res.code == 201) {
@@ -104,7 +104,25 @@ let axiosFun = {
     }
   },
 };
-let answerObj;
+let answerObj = {
+  unRequired1: "",
+  unRequired2: "",
+  unRequired3: "",
+  unRequired4: "",
+  unRequired5: [],
+  unRequired6: "",
+  unRequired7: "",
+  required1: "",
+  required2: "",
+  required3: "",
+  required4: "",
+  required5: "",
+  mail: "",
+  dev: "",
+  os_type: "",
+  os_version: "",
+};
+
 $(function () {
   // 页面状态
   if (new Date().getTime() >= new Date("2020/11/15 12:00:00").getTime()) {
@@ -119,6 +137,18 @@ $(function () {
       $(".questionnaire").hide();
       $(".start").show();
     }
+  }
+
+  if (JSON.parse(sessionStorage.getItem("os_type")) == "ios") {
+    answerObj.os_type = "ios";
+    answerObj.os_version = "ios";
+    $(".qn-r-4-ios,.qn-r-6-ios").show();
+    $(".qn-r-4-Android,.qn-r-6-Android").hide();
+  } else {
+    answerObj.os_type = "andriod";
+    answerObj.os_version = "andriod";
+    $(".qn-r-4-Android,.qn-r-6-Android").show();
+    $(".qn-r-4-ios,.qn-r-6-ios").hide();
   }
 
   // 收展
@@ -152,8 +182,24 @@ $(function () {
   });
 
   // 进入问卷页
+  $(".s1-google").click(function () {
+    sessionStorage.setItem("page", JSON.stringify("questionnaire"));
+    sessionStorage.setItem("os_type", JSON.stringify("andriod"));
+    answerObj.os_type = "andriod";
+    answerObj.os_version = "andriod";
+    $(".qn-r-4-Android,.qn-r-6-Android").show();
+    $(".qn-r-4-ios,.qn-r-6-ios").hide();
+    $(".start").hide();
+    $(".questionnaire").show();
+  });
+
   $(".s1-apple").click(function () {
     sessionStorage.setItem("page", JSON.stringify("questionnaire"));
+    sessionStorage.setItem("os_type", JSON.stringify("ios"));
+    answerObj.os_type = "ios";
+    answerObj.os_version = "ios";
+    $(".qn-r-4-ios,.qn-r-6-ios").show();
+    $(".qn-r-4-Android,.qn-r-6-Android").hide();
     $(".start").hide();
     $(".questionnaire").show();
   });
@@ -163,6 +209,10 @@ $(function () {
     sessionStorage.setItem("page", JSON.stringify("start"));
     $(".start").show();
     $(".questionnaire").hide();
+    answerObj.required4 = "";
+    answerObj.mail = "";
+    answerObj.os_type = "";
+    answerObj.os_version = "";
   });
 
   // 问卷页 - 必填和非必填切换
@@ -183,22 +233,6 @@ $(function () {
   });
 
   // 表单填写
-  answerObj = {
-    unRequired1: "",
-    unRequired2: "",
-    unRequired3: "",
-    unRequired4: "",
-    unRequired5: [],
-    unRequired6: "",
-    unRequired7: "",
-    required1: "",
-    required2: "",
-    required3: "",
-    required4: "",
-    required5: "",
-    mail: "",
-    dev: "",
-  };
 
   // dev
   let reg = new RegExp(/\([^\)]+\)/g);
@@ -267,7 +301,7 @@ $(function () {
   });
 
   // nr-5.1
-  let unRequired5Arr = []
+  let unRequired5Arr = [];
   let nr51AnswersArr = [];
   $("input[name = 'nr-5.1']").change(function () {
     let nr51Answers = [];
@@ -379,7 +413,12 @@ $(function () {
   });
 
   // r-4
-  $("select[name = 'r-4']").change(function () {
+  $("select[name = 'r-4-ios']").change(function () {
+    let answer = $(this).val();
+    answerObj.required4 = answer;
+  });
+
+  $("select[name = 'r-4-Android']").change(function () {
     let answer = $(this).val();
     answerObj.required4 = answer;
   });
@@ -392,7 +431,7 @@ $(function () {
 
   // mail
   let firstMail, comfirmMail;
-  $("input[name = 'firstMail']").change(function () {
+  $(".qn-r-6-ios input[name = 'firstMail']").change(function () {
     firstMail = $.trim($(this).val());
     let reg = new RegExp(/^([\s\S]+)@([\s\S]+)$/i);
     if (!reg.test(firstMail)) {
@@ -403,12 +442,46 @@ $(function () {
     }
   });
 
-  $("input[name = 'comfirmMail']").change(function () {
+  $(".qn-r-6-ios input[name = 'comfirmMail']").change(function () {
     comfirmMail = $.trim($(this).val());
     let reg = new RegExp(/^([\s\S]+)@([\s\S]+)$/i);
     if (!reg.test(comfirmMail)) {
       layer.open({
         content: "メールアドレスが正しくありません",
+        btn: "再入力",
+      });
+      return false;
+    }
+
+    if (firstMail != comfirmMail) {
+      layer.open({
+        content:
+          "確認用のメールアドレスが入力されていない、もしくは確認用のメールアドレスが一致しません。入力内容をご確認ください",
+        btn: "再入力",
+      });
+      return false;
+    }
+  });
+
+  $(".qn-r-6-Android input[name = 'firstMail']").change(function () {
+    firstMail = $.trim($(this).val());
+    let reg = new RegExp(/^([\s\S]+)@gmail.com$/i);
+    if (!reg.test(firstMail)) {
+      layer.open({
+        content:
+          "Android端末でクローズドβテストにご参加のお客様は、Gmailアドレスでご応募ください。Gmailアドレス以外のメールアドレスではご参加いただけませんので、ご了承ください。",
+        btn: "再入力",
+      });
+    }
+  });
+
+  $(".qn-r-6-Android input[name = 'comfirmMail']").change(function () {
+    comfirmMail = $.trim($(this).val());
+    let reg = new RegExp(/^([\s\S]+)@gmail.com$/i);
+    if (!reg.test(comfirmMail)) {
+      layer.open({
+        content:
+          "Android端末でクローズドβテストにご参加のお客様は、Gmailアドレスでご応募ください。Gmailアドレス以外のメールアドレスではご参加いただけませんので、ご了承ください。",
         btn: "再入力",
       });
       return false;
@@ -436,39 +509,70 @@ $(function () {
       return false;
     }
 
-    if (!firstMail) {
-      layer.open({
-        content:
-          "メールアドレスが入力されていません。AppleIDに登録しているメールアドレスをご入力ください",
-        btn: "再入力",
-      });
-      return false;
+    if (answerObj.os_type == "ios") {
+      if (!firstMail) {
+        layer.open({
+          content:
+            "メールアドレスが入力されていません。AppleIDに登録しているメールアドレスをご入力ください",
+          btn: "再入力",
+        });
+        return false;
+      }
+    } else {
+      if (!firstMail) {
+        layer.open({
+          content:
+            "メールアドレスが入力されていません。Gmailアドレスをご入力ください",
+          btn: "再入力",
+        });
+        return false;
+      }
     }
 
     if (!comfirmMail) {
       layer.open({
         content:
-          "メールアドレスが入力されていません。AppleIDに登録しているメールアドレスをご入力ください",
+          "確認用のメールアドレスが入力されていない、もしくは確認用のメールアドレスが一致しません。入力内容をご確認ください",
         btn: "再入力",
       });
       return false;
     }
+    if (answerObj.os_type == "ios") {
+      let reg = new RegExp(/^([\s\S]+)@([\s\S]+)$/i);
+      if (!reg.test(firstMail)) {
+        layer.open({
+          content: "メールアドレスが正しくありません",
+          btn: "再入力",
+        });
+        return false;
+      }
 
-    let reg = new RegExp(/^([\s\S]+)@([\s\S]+)$/i);
-    if (!reg.test(firstMail)) {
-      layer.open({
-        content: "メールアドレスが正しくありません",
-        btn: "再入力",
-      });
-      return false;
-    }
+      if (!reg.test(comfirmMail)) {
+        layer.open({
+          content: "メールアドレスが正しくありません",
+          btn: "再入力",
+        });
+        return false;
+      }
+    } else {
+      let reg = new RegExp(/^([\s\S]+)@gmail.com$/i);
+      if (!reg.test(firstMail)) {
+        layer.open({
+          content:
+            "Android端末でクローズドβテストにご参加のお客様は、Gmailアドレスでご応募ください。Gmailアドレス以外のメールアドレスではご参加いただけませんので、ご了承ください。",
+          btn: "再入力",
+        });
+        return false;
+      }
 
-    if (!reg.test(comfirmMail)) {
-      layer.open({
-        content: "メールアドレスが正しくありません",
-        btn: "再入力",
-      });
-      return false;
+      if (!reg.test(comfirmMail)) {
+        layer.open({
+          content:
+            "Android端末でクローズドβテストにご参加のお客様は、Gmailアドレスでご応募ください。Gmailアドレス以外のメールアドレスではご参加いただけませんので、ご了承ください。",
+          btn: "再入力",
+        });
+        return false;
+      }
     }
 
     if (firstMail != comfirmMail) {
@@ -480,17 +584,22 @@ $(function () {
       return false;
     }
 
-    answerObj.mail = comfirmMail
+    answerObj.mail = comfirmMail;
 
-    if(!answerObj.required1 || !answerObj.required2 || !answerObj.required3 || !answerObj.required4) {
+    if (
+      !answerObj.required1 ||
+      !answerObj.required2 ||
+      !answerObj.required3 ||
+      !answerObj.required4
+    ) {
       layer.open({
         content: "必須項目が入力されていません。1～4、6に全てご記入ください",
         btn: "閉じる",
       });
-      return false
+      return false;
     }
 
-    answerObj.unRequired5 = unRequired5Arr.join(";")
+    answerObj.unRequired5 = unRequired5Arr.join(";");
 
     axiosFun.collect(answerObj);
   });
@@ -501,8 +610,9 @@ $(function () {
     $(".start").show();
     $(".questionnaire").hide();
     dialog.close();
+    answerObj.required4 = "";
+    answerObj.mail = "";
+    answerObj.os_type = "";
+    answerObj.os_version = "";
   });
-
-
-
 });

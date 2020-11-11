@@ -15,7 +15,7 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     publicPath: "",
   },
-  devtool: "inline-source-map", // 开启source map
+  // devtool: "inline-source-map", // 开启source map
   devServer: {
     contentBase: path.join(__dirname, "dist"),
     compress: true,
@@ -26,7 +26,7 @@ module.exports = {
     clientLogLevel: "silent",
     host: "10.0.15.43",
     useLocalIp: true,
-    port: 8080,
+    port: 9000,
     proxy: {
       "/api": {
         target: "http://grayraven-jp.demo.herogame.com/",
@@ -60,12 +60,15 @@ module.exports = {
             presets: [
               [
                 "@babel/preset-env",
-                {
-                  useBuiltIns: "usage",
-                },
+                // {
+                //   useBuiltIns: "usage",
+                //   corejs: { version: 3, proposals: true },
+                // },
               ],
             ],
-            plugins: ["@babel/transform-runtime"],
+            plugins: [["@babel/plugin-transform-runtime", {
+              corejs: 3
+            }]],
           },
         },
       },
@@ -76,14 +79,12 @@ module.exports = {
             loader: MiniCssExtractPlugin.loader,
             options: {
               publicPath: "../",
-              sourceMap: true,
             },
           },
-          { loader: "css-loader", options: { sourceMap: true } },
+          { loader: "css-loader", options: {} },
           {
             loader: "postcss-loader",
             options: {
-              sourceMap: true,
               postcssOptions: {
                 plugins: [
                   [

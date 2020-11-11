@@ -189,7 +189,7 @@ body::after {
 
 .s1-con-methods {
   width: 5.18rem;
-  font-size: 0.22rem;
+  font-size: 0.2rem;
   color: #fff;
   line-height: 1.5;
   text-align: left;
@@ -203,7 +203,7 @@ body::after {
 
 .s1-con-methods2 p {
   width: 5.18rem;
-  font-size: 0.22rem;
+  font-size: 0.18rem;
   color: #967e3e;
   line-height: 1.5;
   text-align: left;
@@ -233,8 +233,8 @@ body::after {
 }
 
 .s1-btnBox .s1-google {
-  width: 2.78rem;
-  height: 0.84rem;
+  width: 3.07rem;
+  height: 1.13rem;
 }
 
 .s1-btnBox .s1-apple {
@@ -625,7 +625,7 @@ body::after {
 
 .qn-con label.ib-sm {
   display: inline-block;
-  width: 2rem;
+  width: 1.9rem;
   font-size: 0.18rem;
 }
 
@@ -769,6 +769,10 @@ input:focus, textarea:focus {
 
 .qn-submit img {
   width: 100%;
+}
+
+.qn-r-4, .qn-r-6 {
+  display: none;
 }
 
 /* 结束 */
