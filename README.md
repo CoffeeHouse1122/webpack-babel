@@ -4,11 +4,10 @@
   npm install babel-plugin-transform-runtime --save-dev
   npm install babel-runtime --save
 ````
-- @babel/polyfill
+- @babel/polyfill (全部打包，污染全局变量)
 
 ```
   npm install --save @babel/polyfill
-
 ```
 
 ```js
@@ -30,7 +29,7 @@
   }
 ```
 
-- core-js@3
+- core-js@3 (选择使用部分打包，污染全局变量)
 
 ````
   npm install core-js@3 --save
@@ -53,7 +52,7 @@
               [
                 "@babel/preset-env",
                 {
-                  useBuiltIns: "usage",
+                  useBuiltIns: "usage", // "entry" = @babel/polyfill
                   corejs: { version: 3, proposals: true },
                 },
               ],
