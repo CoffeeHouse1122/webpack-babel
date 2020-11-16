@@ -1,8 +1,4 @@
-import "../css/style.css";
-
-import html from "../file.html";
-
-$("#app").html(html);
+import '../css/style.css'
 
 // axios
 const $axios = axios.create({
@@ -120,7 +116,7 @@ let answerObj = {
   mail: "",
   dev: "",
   os_type: "",
-  os_version: "",
+  os_version: ""
 };
 
 $(function () {
@@ -139,16 +135,17 @@ $(function () {
     }
   }
 
-  if (JSON.parse(sessionStorage.getItem("os_type")) == "ios") {
-    answerObj.os_type = "ios";
-    answerObj.os_version = "ios";
-    $(".qn-r-4-ios,.qn-r-6-ios").show();
-    $(".qn-r-4-Android,.qn-r-6-Android").hide();
+  if(JSON.parse(sessionStorage.getItem("os_type")) == "ios") {
+    answerObj.os_type = "ios"
+    answerObj.os_version = "ios"
+    $(".qn-r-4-ios,.qn-r-6-ios").show()
+    $(".qn-r-4-Android,.qn-r-6-Android").hide()
   } else {
-    answerObj.os_type = "andriod";
-    answerObj.os_version = "andriod";
-    $(".qn-r-4-Android,.qn-r-6-Android").show();
-    $(".qn-r-4-ios,.qn-r-6-ios").hide();
+    answerObj.os_type = "andriod"
+    answerObj.os_version = "andriod"
+    $(".qn-r-4-Android,.qn-r-6-Android").show()
+    $(".qn-r-4-ios,.qn-r-6-ios").hide()
+
   }
 
   // 收展
@@ -185,10 +182,10 @@ $(function () {
   $(".s1-google").click(function () {
     sessionStorage.setItem("page", JSON.stringify("questionnaire"));
     sessionStorage.setItem("os_type", JSON.stringify("andriod"));
-    answerObj.os_type = "andriod";
-    answerObj.os_version = "andriod";
-    $(".qn-r-4-Android,.qn-r-6-Android").show();
-    $(".qn-r-4-ios,.qn-r-6-ios").hide();
+    answerObj.os_type = "andriod"
+    answerObj.os_version = "andriod"
+    $(".qn-r-4-Android,.qn-r-6-Android").show()
+    $(".qn-r-4-ios,.qn-r-6-ios").hide()
     $(".start").hide();
     $(".questionnaire").show();
   });
@@ -196,10 +193,10 @@ $(function () {
   $(".s1-apple").click(function () {
     sessionStorage.setItem("page", JSON.stringify("questionnaire"));
     sessionStorage.setItem("os_type", JSON.stringify("ios"));
-    answerObj.os_type = "ios";
-    answerObj.os_version = "ios";
-    $(".qn-r-4-ios,.qn-r-6-ios").show();
-    $(".qn-r-4-Android,.qn-r-6-Android").hide();
+    answerObj.os_type = "ios"
+    answerObj.os_version = "ios"
+    $(".qn-r-4-ios,.qn-r-6-ios").show()
+    $(".qn-r-4-Android,.qn-r-6-Android").hide()
     $(".start").hide();
     $(".questionnaire").show();
   });
@@ -209,10 +206,12 @@ $(function () {
     sessionStorage.setItem("page", JSON.stringify("start"));
     $(".start").show();
     $(".questionnaire").hide();
-    answerObj.required4 = "";
-    answerObj.mail = "";
-    answerObj.os_type = "";
-    answerObj.os_version = "";
+    answerObj = {
+      required4: "",
+      mail: "",
+      os_type: "",
+      os_version: ""
+    };
   });
 
   // 问卷页 - 必填和非必填切换
@@ -233,6 +232,7 @@ $(function () {
   });
 
   // 表单填写
+
 
   // dev
   let reg = new RegExp(/\([^\)]+\)/g);
@@ -301,7 +301,7 @@ $(function () {
   });
 
   // nr-5.1
-  let unRequired5Arr = [];
+  let unRequired5Arr = []
   let nr51AnswersArr = [];
   $("input[name = 'nr-5.1']").change(function () {
     let nr51Answers = [];
@@ -465,11 +465,10 @@ $(function () {
 
   $(".qn-r-6-Android input[name = 'firstMail']").change(function () {
     firstMail = $.trim($(this).val());
-    let reg = new RegExp(/^([\s\S]+)@gmail.com$/i);
+    let reg = new RegExp(/^([\s\S]+)@gmail.com$/i) ;
     if (!reg.test(firstMail)) {
       layer.open({
-        content:
-          "Android端末でクローズドβテストにご参加のお客様は、Gmailアドレスでご応募ください。Gmailアドレス以外のメールアドレスではご参加いただけませんので、ご了承ください。",
+        content: "Android端末でクローズドβテストにご参加のお客様は、Gmailアドレスでご応募ください。Gmailアドレス以外のメールアドレスではご参加いただけませんので、ご了承ください。",
         btn: "再入力",
       });
     }
@@ -477,11 +476,10 @@ $(function () {
 
   $(".qn-r-6-Android input[name = 'comfirmMail']").change(function () {
     comfirmMail = $.trim($(this).val());
-    let reg = new RegExp(/^([\s\S]+)@gmail.com$/i);
+    let reg = new RegExp(/^([\s\S]+)@gmail.com$/i) ;
     if (!reg.test(comfirmMail)) {
       layer.open({
-        content:
-          "Android端末でクローズドβテストにご参加のお客様は、Gmailアドレスでご応募ください。Gmailアドレス以外のメールアドレスではご参加いただけませんので、ご了承ください。",
+        content: "Android端末でクローズドβテストにご参加のお客様は、Gmailアドレスでご応募ください。Gmailアドレス以外のメールアドレスではご参加いただけませんので、ご了承ください。",
         btn: "再入力",
       });
       return false;
@@ -496,6 +494,7 @@ $(function () {
       return false;
     }
   });
+
 
   // 提交
   $(".qn-submit").click(function () {
@@ -509,24 +508,13 @@ $(function () {
       return false;
     }
 
-    if (answerObj.os_type == "ios") {
-      if (!firstMail) {
-        layer.open({
-          content:
-            "メールアドレスが入力されていません。AppleIDに登録しているメールアドレスをご入力ください",
-          btn: "再入力",
-        });
-        return false;
-      }
-    } else {
-      if (!firstMail) {
-        layer.open({
-          content:
-            "メールアドレスが入力されていません。Gmailアドレスをご入力ください",
-          btn: "再入力",
-        });
-        return false;
-      }
+    if (!firstMail) {
+      layer.open({
+        content:
+          "メールアドレスが入力されていません。AppleIDに登録しているメールアドレスをご入力ください",
+        btn: "再入力",
+      });
+      return false;
     }
 
     if (!comfirmMail) {
@@ -537,7 +525,7 @@ $(function () {
       });
       return false;
     }
-    if (answerObj.os_type == "ios") {
+    if(answerObj.os_type == "ios") {
       let reg = new RegExp(/^([\s\S]+)@([\s\S]+)$/i);
       if (!reg.test(firstMail)) {
         layer.open({
@@ -546,7 +534,7 @@ $(function () {
         });
         return false;
       }
-
+  
       if (!reg.test(comfirmMail)) {
         layer.open({
           content: "メールアドレスが正しくありません",
@@ -558,17 +546,15 @@ $(function () {
       let reg = new RegExp(/^([\s\S]+)@gmail.com$/i);
       if (!reg.test(firstMail)) {
         layer.open({
-          content:
-            "Android端末でクローズドβテストにご参加のお客様は、Gmailアドレスでご応募ください。Gmailアドレス以外のメールアドレスではご参加いただけませんので、ご了承ください。",
+          content: "Android端末でクローズドβテストにご参加のお客様は、Gmailアドレスでご応募ください。Gmailアドレス以外のメールアドレスではご参加いただけませんので、ご了承ください。",
           btn: "再入力",
         });
         return false;
       }
-
+  
       if (!reg.test(comfirmMail)) {
         layer.open({
-          content:
-            "Android端末でクローズドβテストにご参加のお客様は、Gmailアドレスでご応募ください。Gmailアドレス以外のメールアドレスではご参加いただけませんので、ご了承ください。",
+          content: "Android端末でクローズドβテストにご参加のお客様は、Gmailアドレスでご応募ください。Gmailアドレス以外のメールアドレスではご参加いただけませんので、ご了承ください。",
           btn: "再入力",
         });
         return false;
@@ -584,22 +570,17 @@ $(function () {
       return false;
     }
 
-    answerObj.mail = comfirmMail;
+    answerObj.mail = comfirmMail
 
-    if (
-      !answerObj.required1 ||
-      !answerObj.required2 ||
-      !answerObj.required3 ||
-      !answerObj.required4
-    ) {
+    if(!answerObj.required1 || !answerObj.required2 || !answerObj.required3 || !answerObj.required4) {
       layer.open({
         content: "必須項目が入力されていません。1～4、6に全てご記入ください",
         btn: "閉じる",
       });
-      return false;
+      return false
     }
 
-    answerObj.unRequired5 = unRequired5Arr.join(";");
+    answerObj.unRequired5 = unRequired5Arr.join(";")
 
     axiosFun.collect(answerObj);
   });
@@ -610,9 +591,14 @@ $(function () {
     $(".start").show();
     $(".questionnaire").hide();
     dialog.close();
-    answerObj.required4 = "";
-    answerObj.mail = "";
-    answerObj.os_type = "";
-    answerObj.os_version = "";
+    answerObj = {
+      required4: "",
+      mail: "",
+      os_type: "",
+      os_version: ""
+    };
   });
+
+
+
 });

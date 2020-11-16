@@ -9,11 +9,11 @@ const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
   mode: "none",
-  entry: ["./src/js/main.js"],
+  entry: { main: "./src/js/main.js" },
   output: {
     filename: "js/[name].min.js",
     path: path.resolve(__dirname, "dist"),
-    publicPath: "",
+    publicPath: "./",
   },
   // devtool: "inline-source-map", // 开启source map
   devServer: {
@@ -57,12 +57,15 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: [
-              ["@babel/preset-env"],
+            presets: [["@babel/preset-env"]],
+            plugins: [
+              [
+                "@babel/plugin-transform-runtime",
+                {
+                  corejs: 3,
+                },
+              ],
             ],
-            plugins: [["@babel/plugin-transform-runtime", {
-              corejs: 3
-            }]],
           },
         },
       },
@@ -102,6 +105,7 @@ module.exports = {
             options: {
               limit: false,
               outputPath: "images/",
+              esModule: false,
             },
           },
         ],
@@ -120,7 +124,20 @@ module.exports = {
       {
         test: /\.html$/i,
         loader: "html-loader",
-        exclude: /index.html$/,
+        // exclude: /index.html$/,
+        options: {
+          attributes: {
+            list: [
+              {
+                attribute: "src",
+                type: "src",
+                filter: (tag, attribute, attributes, resourcePath) => {
+                  return tag.toLowerCase() !== "script";
+                },
+              },
+            ],
+          },
+        }
       },
     ],
   },
@@ -128,6 +145,7 @@ module.exports = {
     new webpack.ProgressPlugin(), // 进程
     new CleanWebpackPlugin(), // 清理dist
     new HtmlWebpackPlugin({
+      filename: "index.html",
       title: "template",
       template: "src/index.html",
     }),
