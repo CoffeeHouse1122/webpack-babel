@@ -20,15 +20,16 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: [["@babel/preset-env"]],
-            plugins: [
+            presets: [
               [
-                "@babel/plugin-transform-runtime",
+                "@babel/preset-env",
                 {
-                  corejs: 3,
+                  useBuiltIns: "usage", // "entry" = @babel/polyfill
+                  corejs: { version: 3, proposals: true },
                 },
               ],
             ],
+            plugins: ["@babel/plugin-transform-runtime"],
           },
         },
       },

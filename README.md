@@ -65,7 +65,7 @@
   }
 ````
 
-- @babel/runtime-corejs3 (推荐)
+- @babel/runtime-corejs3 (开发js库时使用，不污染全局变量)
 
 ````
   npm install --save @babel/runtime-corejs3 

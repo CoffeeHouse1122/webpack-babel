@@ -29,7 +29,7 @@ module.exports = {
     port: 9000,
     proxy: {
       "/api": {
-        target: "http://grayraven-jp.demo.herogame.com/",
+        target: "http://grayraven.jp",
         changeOrigin: true,
         ws: true,
         pathRewrite: {
@@ -57,15 +57,16 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: [["@babel/preset-env"]],
-            plugins: [
+            presets: [
               [
-                "@babel/plugin-transform-runtime",
+                "@babel/preset-env",
                 {
-                  corejs: 3,
+                  useBuiltIns: "usage", // "entry" = @babel/polyfill
+                  corejs: { version: 3, proposals: true },
                 },
               ],
             ],
+            plugins: ["@babel/plugin-transform-runtime"],
           },
         },
       },
@@ -111,6 +112,19 @@ module.exports = {
         ],
       },
       {
+        test: /\.(mp4)$/,
+        use: [
+          {
+            loader: "url-loader",
+            options: {
+              limit: false,
+              outputPath: "media/",
+              esModule: false,
+            },
+          },
+        ],
+      },
+      {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
         use: [
           {
@@ -137,7 +151,7 @@ module.exports = {
               },
             ],
           },
-        }
+        },
       },
     ],
   },
